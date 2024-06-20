@@ -2,7 +2,7 @@
 name = "exploring-fastapi"
 version = "0.1.0"
 description = ""
-authors = ["drmalina"]
+authors = ["Maciej Malinowski"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -11,6 +11,8 @@ fastapi = "^0.111.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.9"
+pre-commit = "^3.7.1"
+mypy = "^1.10.0"
 
 [build-system]
 requires = ["poetry-core"]
