@@ -1,0 +1,32 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: no-commit-to-branch
+        args:
+          [
+            "--branch",
+            "master",
+            "--branch",
+            "main",
+            "--branch",
+            "qa",
+            "--branch",
+            "uat",
+          ]
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [ commit-msg ]
+        args: [ ] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0
+    hooks:
+      - id: mypy
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.4.10
+    hooks:
+      - id: ruff
+        args:
+          - --fix
