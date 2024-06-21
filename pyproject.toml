@@ -14,6 +14,56 @@ ruff = "^0.4.9"
 pre-commit = "^3.7.1"
 mypy = "^1.10.0"
 
+[tool.ruff.lint]
+preview = true
+select = [
+    # pycodestyle
+    "E",
+    "W",
+    # pyflakes
+    "F",
+    # isort
+    "I",
+    # pep8-naming
+    "N",
+    # mccabe
+    "C90",
+    # pyupgrade
+    "UP",
+    # flake8-annotations
+    "ANN",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # flake8-bandit
+    "S",
+    # flake8-comprehensions
+    "C4",
+    # flake8-builtins
+    "A",
+    # flake8-datetimez
+    "DTZ",
+    # flake8-return
+    "RET",
+    # flake8-type-checking
+    "TCH",
+    # pylint
+    "PL",
+    # tryceratops
+    "TRY",
+    # perflint
+    "PERF",
+    # refurb
+    "FURB",
+    # ruff-specific rules
+    "RUF"
+]
+ignore = [
+    # async not using await -> FastAPI
+    "RUF029"
+]
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
