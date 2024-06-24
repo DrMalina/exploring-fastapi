@@ -8,6 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 fastapi = "^0.111.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.31"}
+alembic = "^1.13.1"
+asyncpg = "^0.29.0"
+pydantic-settings = "^2.3.3"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.4.9"
@@ -61,8 +65,17 @@ select = [
 ]
 ignore = [
     # async not using await -> FastAPI
-    "RUF029"
+    "RUF029",
+    # disallowing typing.Ant
+    "ANN401"
 ]
+
+[tool.mypy]
+strict = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_untyped_decorators = false
 
 [build-system]
 requires = ["poetry-core"]
