@@ -1,5 +1,5 @@
 import contextlib
-from typing import AsyncIterator
+from typing import Any, AsyncIterator
 
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
@@ -14,7 +14,7 @@ from src.db.exceptions import DbSessionManagerNotInitializedError
 
 
 class DatabaseSessionManager:
-    def __init__(self, host: str, engine_kwargs: dict | None = None) -> None:
+    def __init__(self, host: str, **engine_kwargs: Any) -> None:
         if engine_kwargs is None:
             engine_kwargs = {}
         self._engine: AsyncEngine | None = create_async_engine(host, **engine_kwargs)
@@ -56,11 +56,10 @@ class DatabaseSessionManager:
             await session.close()
 
 
-sessionmanager = DatabaseSessionManager(settings.DATABASE_URL, {
-    "pool_size": settings.DATABASE_POOL_SIZE,
-    "pool_recycle": settings.DATABASE_POOL_TTL,
-    "pool_pre_ping": settings.DATABASE_POOL_PRE_PING
-})
+sessionmanager = DatabaseSessionManager(settings.DATABASE_URL,
+                                        pool_size=settings.DATABASE_POOL_SIZE,
+                                        pool_recycle=settings.DATABASE_POOL_TTL,
+                                        pool_pre_ping=settings.DATABASE_POOL_PRE_PING)
 
 
 async def get_db_session() -> AsyncIterator[AsyncSession]:
