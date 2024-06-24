@@ -19,4 +19,4 @@ class Base:
         return f'{self.__class__.__name__}({", ".join(columns)})'
 
     def dict(self) -> dict[str, Any]:
-        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}
+        return {c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs}  # type: ignore
