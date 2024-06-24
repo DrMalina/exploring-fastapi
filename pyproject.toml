@@ -64,6 +64,13 @@ ignore = [
     "RUF029"
 ]
 
+[tool.mypy]
+strict = true
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+disallow_any_generics = false
+disallow_untyped_decorators = false
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
