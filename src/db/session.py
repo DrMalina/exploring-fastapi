@@ -56,7 +56,7 @@ class DatabaseSessionManager:
             await session.close()
 
 
-sessionmanager = DatabaseSessionManager(settings.DATABASE_URL,
+sessionmanager = DatabaseSessionManager(str(settings.DATABASE_ASYNC_URL),
                                         pool_size=settings.DATABASE_POOL_SIZE,
                                         pool_recycle=settings.DATABASE_POOL_TTL,
                                         pool_pre_ping=settings.DATABASE_POOL_PRE_PING)
