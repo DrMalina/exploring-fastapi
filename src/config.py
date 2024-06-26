@@ -18,7 +18,7 @@ class Config(CustomBaseSettings):
     DATABASE_POOL_TTL: int = 60 * 20  # 20 minutes
     DATABASE_POOL_PRE_PING: bool = True
 
-    ENVIRONMENT: Environment = Environment.LOCAL
+    ENVIRONMENT: Environment = Environment.local
 
     CORS_ORIGINS: list[str] = ["*"]
     CORS_ORIGINS_REGEX: str | None = None

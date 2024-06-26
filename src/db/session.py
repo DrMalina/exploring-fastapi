@@ -19,7 +19,12 @@ class DatabaseSessionManager:
             engine_kwargs = {}
         self._engine: AsyncEngine | None = create_async_engine(host, **engine_kwargs)
         self._sessionmaker: async_sessionmaker[AsyncSession] | None = (
-            async_sessionmaker(autocommit=False, bind=self._engine))
+            async_sessionmaker(autocommit=False, bind=self._engine)
+        )
+
+    @property
+    def engine(self) -> AsyncEngine | None:
+        return self._engine
 
     async def close(self) -> None:
         if self._engine is None:
@@ -56,10 +61,12 @@ class DatabaseSessionManager:
             await session.close()
 
 
-sessionmanager = DatabaseSessionManager(settings.DATABASE_URL,
-                                        pool_size=settings.DATABASE_POOL_SIZE,
-                                        pool_recycle=settings.DATABASE_POOL_TTL,
-                                        pool_pre_ping=settings.DATABASE_POOL_PRE_PING)
+sessionmanager = DatabaseSessionManager(
+    str(settings.DATABASE_ASYNC_URL),
+    pool_size=settings.DATABASE_POOL_SIZE,
+    pool_recycle=settings.DATABASE_POOL_TTL,
+    pool_pre_ping=settings.DATABASE_POOL_PRE_PING,
+)
 
 
 async def get_db_session() -> AsyncIterator[AsyncSession]:
