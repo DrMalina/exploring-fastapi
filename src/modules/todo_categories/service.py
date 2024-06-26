@@ -13,14 +13,14 @@ class TodoCategoriesService:
         self.db_session = db_session
 
     async def create(self, todo_category: TodoCategoryCreate) -> TodoCategory:
-        result = await self.db_session.scalar(insert(TodoCategory).
-                                       values(**todo_category.dict()).
-                                       returning(TodoCategory))
+        result = await self.db_session.scalar(
+            insert(TodoCategory).values(**todo_category.dict()).returning(TodoCategory)
+        )
         await self.db_session.commit()
         await self.db_session.refresh(result)
 
         if not result:
-            raise CouldNotReturnCreatedDBRecordError('TodoCategory')
+            raise CouldNotReturnCreatedDBRecordError("TodoCategory")
         return result
 
     async def get_all(self) -> Sequence[TodoCategory]:

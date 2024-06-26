@@ -2,10 +2,10 @@ from enum import Enum
 
 
 class Environment(str, Enum):
-    local = 'local'
-    testing = 'testing'
-    staging = 'staging'
-    production = 'production'
+    local = "local"
+    testing = "testing"
+    staging = "staging"
+    production = "production"
 
     @property
     def is_debug(self) -> bool:

@@ -30,7 +30,7 @@ app.add_middleware(
     allow_headers=settings.CORS_HEADERS,
 )
 
-app.include_router(api_router, prefix='/my-service/api/v1')
+app.include_router(api_router, prefix="/my-service/api/v1")
 
 
 @app.get("/healthcheck", include_in_schema=False)
