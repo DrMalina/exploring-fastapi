@@ -20,7 +20,7 @@ class TodoCategoriesService:
         await self.db_session.refresh(result)
 
         if not result:
-            raise CouldNotReturnCreatedDBRecordError("TodoCategory")
+            raise CouldNotReturnCreatedDBRecordError(str(TodoCategory.name))
         return result
 
     async def get_all(self) -> Sequence[TodoCategory]:
