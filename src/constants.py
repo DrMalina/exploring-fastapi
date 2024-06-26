@@ -1,7 +1,12 @@
 from enum import Enum
 
 
-class Environment(str, Enum):
+class AppBaseEnum(str, Enum):
+    def __str__(self) -> str:
+        return str.__str__(self)
+
+
+class Environment(AppBaseEnum):
     local = "local"
     testing = "testing"
     staging = "staging"
