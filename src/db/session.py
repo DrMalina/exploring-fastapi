@@ -21,6 +21,10 @@ class DatabaseSessionManager:
         self._sessionmaker: async_sessionmaker[AsyncSession] | None = (
             async_sessionmaker(autocommit=False, bind=self._engine))
 
+    @property
+    def engine(self) -> AsyncEngine | None:
+        return self._engine
+
     async def close(self) -> None:
         if self._engine is None:
             raise DbSessionManagerNotInitializedError
