@@ -14,7 +14,9 @@ class TodoCategoriesService:
 
     async def create(self, todo_category: TodoCategoryCreate) -> TodoCategory:
         result = await self.db_session.scalar(
-            insert(TodoCategory).values(**todo_category.dict()).returning(TodoCategory)
+            insert(TodoCategory)
+            .values(**todo_category.model_dump())
+            .returning(TodoCategory)
         )
         await self.db_session.commit()
         await self.db_session.refresh(result)
