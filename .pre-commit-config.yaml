@@ -24,7 +24,11 @@ repos:
     rev: v1.10.0
     hooks:
       - id: mypy
-        additional_dependencies: ["alembic", "pydantic"]
+        additional_dependencies: [
+          "alembic",
+          "pydantic",
+          "fastapi"
+        ]
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.4.10
     hooks:
