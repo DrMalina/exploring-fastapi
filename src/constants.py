@@ -2,19 +2,19 @@ from enum import Enum
 
 
 class Environment(str, Enum):
-    LOCAL = "LOCAL"
-    TESTING = "TESTING"
-    STAGING = "STAGING"
-    PRODUCTION = "PRODUCTION"
+    local = 'local'
+    testing = 'testing'
+    staging = 'staging'
+    production = 'production'
 
     @property
     def is_debug(self) -> bool:
-        return self in {self.LOCAL, self.STAGING, self.TESTING}
+        return self in {self.local, self.staging, self.testing}
 
     @property
     def is_testing(self) -> bool:
-        return self == self.TESTING
+        return self == self.testing
 
     @property
     def is_deployed(self) -> bool:
-        return self in {self.STAGING, self.PRODUCTION}
+        return self in {self.staging, self.production}
