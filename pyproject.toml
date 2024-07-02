@@ -86,7 +86,7 @@ disallow_incomplete_defs = true
 disallow_untyped_defs = true
 disallow_any_generics = false
 disallow_untyped_decorators = false
-disallow_return_any = false
+warn_return_any = false
 
 [build-system]
 requires = ["poetry-core"]
