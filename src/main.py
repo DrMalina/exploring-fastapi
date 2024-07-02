@@ -37,7 +37,7 @@ app.add_middleware(
 )
 
 
-app.include_router(api_router, prefix="/my-service/api/v1")
+app.include_router(api_router, prefix="/api")
 
 
 @app.exception_handler(Exception)
