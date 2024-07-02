@@ -14,7 +14,7 @@ from src.db.exceptions import DbSessionManagerNotInitializedError
 
 
 class DatabaseSessionManager:
-    def __init__(self, host: str, **engine_kwargs: Any) -> None:
+    def __init__(self, host: str, **engine_kwargs: Any | None) -> None:
         if engine_kwargs is None:
             engine_kwargs = {}
         self._engine: AsyncEngine | None = create_async_engine(host, **engine_kwargs)
