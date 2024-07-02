@@ -1,9 +1,8 @@
 from typing import Any, LiteralString
 
 from fastapi import HTTPException
-from pydantic import ValidationError
+from pydantic import BaseModel, Field, ValidationError
 from pydantic_core import InitErrorDetails, PydanticCustomError
-from starlette import status
 
 
 class BaseAppError(Exception):
@@ -17,14 +16,24 @@ class CouldNotReturnCreatedDBRecordError(BaseAppError):
         )
 
 
-class CustomHTTPException(HTTPException):
-    STATUS_CODE = status.HTTP_500_INTERNAL_SERVER_ERROR
-    DETAIL_MSG = "Server error"
+class CustomHTTPErrorDetail(BaseModel):
+    msg: str
+    loc: tuple[int | str, ...]
+    error_type: str = Field(..., alias="type")
+    input_value: Any | None = Field(None, alias="input")
+    ctx: dict | None = None
 
-    def __init__(self, status_code: int | None = None, msg: str | None = None) -> None:
+
+class CustomHTTPException(HTTPException):
+    def __init__(
+        self, status_code: int, error_details: list[CustomHTTPErrorDetail]
+    ) -> None:
         super().__init__(
-            status_code=status_code or self.STATUS_CODE,
-            detail=[{"msg": msg or self.DETAIL_MSG}],
+            status_code=status_code,
+            detail=[
+                err_detail.model_dump(exclude_none=True, by_alias=True)
+                for err_detail in error_details
+            ],
         )
 
 

@@ -28,3 +28,7 @@ class TodoCategoriesService:
     async def get_all(self) -> Sequence[TodoCategory]:
         results = await self.db_session.scalars(select(TodoCategory))
         return results.all()
+
+    async def get(self, todo_category_id: int) -> TodoCategory | None:
+        stmt = select(TodoCategory).where(TodoCategory.id == todo_category_id)
+        return await self.db_session.scalar(stmt)
