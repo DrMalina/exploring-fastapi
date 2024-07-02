@@ -16,3 +16,18 @@ class TodoCategoryNotFound(CustomHTTPException):
                 )
             ],
         )
+
+
+class TodoCategoryAlreadyExists(CustomHTTPException):
+    def __init__(self, todo_category_name: str, loc: tuple[int | str, ...]) -> None:
+        super().__init__(
+            status_code=status.HTTP_409_CONFLICT,
+            error_details=[
+                CustomHTTPErrorDetail(
+                    msg="A TodoCategory with that name already exists.",
+                    loc=loc,
+                    type="exists",
+                    input=todo_category_name,
+                )
+            ],
+        )
