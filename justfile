@@ -19,11 +19,14 @@ downgrade *args:
 lint:
     poetry run ruff src --fix
 
-lint-check:
+lint-c:
     poetry run ruff check src
 
-format:
+fmt:
     poetry run ruff format src
+
+test-i *args:
+    poetry run pytest tests/integration {{args}}
 
 # docker
 up:
