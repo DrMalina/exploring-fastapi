@@ -1,11 +1,18 @@
 from starlette import status
 
-from src.exceptions import CustomHTTPException
+from src.exceptions import CustomHTTPErrorDetail, CustomHTTPException
 
 
-class TodoCategoryExistsException(CustomHTTPException):
-    def __init__(self, name: str) -> None:
+class TodoCategoryNotFound(CustomHTTPException):
+    def __init__(self, todo_category_id: int, loc: tuple[int | str, ...]) -> None:
         super().__init__(
-            status_code=status.HTTP_409_CONFLICT,
-            msg=f"TodoCategory with a name '{name}' already exists.",
+            status_code=status.HTTP_404_NOT_FOUND,
+            error_details=[
+                CustomHTTPErrorDetail(
+                    msg="The TodoCategory does not exist.",
+                    loc=loc,
+                    type="not_found",
+                    input=todo_category_id,
+                )
+            ],
         )
