@@ -19,14 +19,14 @@ async def test_create__already_exists__raises_validation_exception(
     assert response.status_code == 201
 
     response = await test_client_db.post("/api/todo-categories/", json={"name": "Work"})
-    assert response.status_code == 422
+    assert response.status_code == 409
     assert response.json() == {
         "detail": [
             {
                 "input": "Work",
                 "loc": ["body", "name"],
-                "msg": "A Todo Category with that name already exists.",
-                "type": "unique",
+                "msg": "A TodoCategory with that name already exists.",
+                "type": "exists",
             }
         ]
     }
