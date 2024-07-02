@@ -87,9 +87,9 @@ async def test_get__does_not_exist__returns_404(
     assert response.json() == {
         "detail": [
             {
-                "input": "99",
+                "input": non_existing_id,
                 "loc": ["path", "id"],
-                "msg": "TodCategory not found.",
+                "msg": "The TodoCategory does not exist.",
                 "type": "not_found",
             }
         ]
