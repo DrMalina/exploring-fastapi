@@ -13,7 +13,20 @@ services:
       - app_db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-
+  test_app_db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=test-app
+      - POSTGRES_PASSWORD=test-app
+      - POSTGRES_DB=test-app
+    ports:
+      - 5434:5432 # Use a different port to avoid conflicts with the main database
+    expose:
+      - "5434" # Exposing the different port for clarity
+    volumes:
+      - test_db_data:/var/lib/postgresql/data:cached
 volumes:
   app_db_data:
+    driver: "local"
+  test_db_data:
     driver: "local"
