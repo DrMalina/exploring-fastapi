@@ -2,7 +2,10 @@ from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
 from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from loguru import logger
+from pydantic import ValidationError
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.requests import Request
@@ -50,6 +53,17 @@ async def generic_exception_handler(_request: Request, exc: Exception) -> JSONRe
                 {"msg": "Something went wrong", "loc": ["Unknown"], "type": "Unknown"}
             ]
         },
+    )
+
+
+@app.exception_handler(ValidationError)
+async def validation_exception_handler(
+    _request: Request, exc: RequestValidationError
+) -> JSONResponse:
+    logger.debug(f"Validation Error: {exc!s}")
+    return JSONResponse(
+        content=jsonable_encoder({"detail": exc.errors()}),
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
     )
 
 
