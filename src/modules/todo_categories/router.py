@@ -3,11 +3,11 @@ from fastapi_restful.cbv import cbv
 from sqlalchemy.exc import IntegrityError
 from starlette import status
 
-from src.exceptions import (
-    CustomValidationError,
-)
 from src.modules.todo_categories.dependencies import set_up_todo_categories_service
-from src.modules.todo_categories.exceptions import TodoCategoryNotFound
+from src.modules.todo_categories.exceptions import (
+    TodoCategoryAlreadyExists,
+    TodoCategoryNotFound,
+)
 from src.modules.todo_categories.schemas import TodoCategory, TodoCategoryCreate
 from src.modules.todo_categories.service import TodoCategoriesService
 from src.utils.db import is_unique_validation_integrity_error
@@ -28,12 +28,8 @@ class TodoCategoriesRouter:
             return TodoCategory.model_validate(result)
         except IntegrityError as ex:
             if is_unique_validation_integrity_error(ex):
-                raise CustomValidationError(
-                    title=TodoCategory.__name__,
-                    error_type="unique",
-                    msg="A Todo Category with that name already exists.",
-                    loc=("body", "name"),
-                    input_value=todo_category.name,
+                raise TodoCategoryAlreadyExists(
+                    todo_category.name, loc=("body", "name")
                 ) from ex
             raise
 
