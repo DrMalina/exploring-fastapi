@@ -18,6 +18,8 @@ class Config(CustomBaseSettings):
     DATABASE_POOL_TTL: int = 60 * 20  # 20 minutes
     DATABASE_POOL_PRE_PING: bool = True
 
+    TEST_DATABASE_ASYNC_URL: PostgresDsn
+
     ENVIRONMENT: Environment = Environment.local
 
     CORS_ORIGINS: list[str] = ["*"]
