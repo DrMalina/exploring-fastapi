@@ -5,6 +5,7 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from src.config import settings
 from src.db.base import Base
 from src.db.session import get_db_session
 from src.main import app
@@ -33,7 +34,7 @@ SQLALCHEMY_DATABASE_URL = (
 
 # we add "poolclass=NullPool", because the same engine must be shared between
 # different loop. See more at https://stackoverflow.com/a/75444607
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+engine = create_async_engine(str(settings.TEST_DATABASE_ASYNC_URL), poolclass=NullPool)
 
 TestingSessionLocal = async_sessionmaker(autocommit=False, bind=engine)
 
