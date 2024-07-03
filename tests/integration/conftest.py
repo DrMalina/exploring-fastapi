@@ -5,6 +5,7 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
+from src.config import settings
 from src.db.base import Base
 from src.db.session import get_db_session
 from src.main import app
@@ -27,13 +28,9 @@ async def fx_test_client() -> AsyncIterator[AsyncClient]:
         yield ac
 
 
-SQLALCHEMY_DATABASE_URL = (
-    "postgresql+asyncpg://test-app:test-app@localhost:5434/test-app"
-)
-
 # we add "poolclass=NullPool", because the same engine must be shared between
 # different loop. See more at https://stackoverflow.com/a/75444607
-engine = create_async_engine(SQLALCHEMY_DATABASE_URL, poolclass=NullPool)
+engine = create_async_engine(str(settings.TEST_DATABASE_ASYNC_URL), poolclass=NullPool)
 
 TestingSessionLocal = async_sessionmaker(autocommit=False, bind=engine)
 
@@ -48,8 +45,14 @@ async def _drop_tables() -> None:
         await conn.run_sync(Base.metadata.drop_all)
 
 
+@pytest.fixture(name="session")
+async def fx_session() -> AsyncIterator[AsyncSession]:
+    async with TestingSessionLocal() as session:
+        yield session
+
+
 @pytest.fixture(name="test_client_db")
-async def fx_test_client_db() -> AsyncIterator[AsyncClient]:
+async def fx_test_client_db(session: AsyncSession) -> AsyncIterator[AsyncClient]:
     """Sets up a FastAPI AsyncClient used for testing with
     a testing DB session.
 
@@ -62,8 +65,7 @@ async def fx_test_client_db() -> AsyncIterator[AsyncClient]:
 
     # Dependency override
     async def override_get_db() -> AsyncIterator[AsyncSession]:
-        async with TestingSessionLocal() as session:
-            yield session
+        yield session
 
     app.dependency_overrides[get_db_session] = override_get_db
 
@@ -72,13 +74,3 @@ async def fx_test_client_db() -> AsyncIterator[AsyncClient]:
         base_url="http://testserver",
     ) as ac:
         yield ac
-
-
-@pytest.fixture(scope="module", name="anyio_backend")
-def fx_anyio_backend() -> str:
-    """Specify the backend used for testing using anyio plugin.
-
-    See more at:
-    https://anyio.readthedocs.io/en/stable/testing.html#specifying-the-backends-to-run-on
-    """
-    return "asyncio"
