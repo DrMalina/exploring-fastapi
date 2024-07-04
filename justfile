@@ -54,6 +54,10 @@ test-i *args:
 test-u *args:
     poetry run pytest tests/unit {{args}}
 
+# measure code coverage
+test-cov *args:
+    poetry run pytest --cov=src tests/
+
 # start and run services with docker-compose
 up:
   docker-compose up -d
