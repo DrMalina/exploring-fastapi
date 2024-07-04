@@ -1,4 +1,6 @@
-from sqlalchemy import insert
+from collections.abc import Sequence
+
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.exceptions import CouldNotReturnCreatedDBRecordError
@@ -21,3 +23,7 @@ class TodoService:
             raise CouldNotReturnCreatedDBRecordError(str(Todo.name))
 
         return result
+
+    async def get_all(self) -> Sequence[Todo]:
+        results = await self.db_session.scalars(select(Todo))
+        return results.all()

@@ -27,3 +27,7 @@ class TodosRouter:
                     todo.todo_category_id, loc=("body", "todo_category_id")
                 ) from ex
             raise
+
+    @router.get("/", status_code=status.HTTP_200_OK, summary="Get all Todos")
+    async def get_all(self) -> list[Todo]:
+        return [Todo.model_validate(model) for model in await self._service.get_all()]
