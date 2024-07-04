@@ -105,3 +105,11 @@ async def test_get_all__existing_todos__returns_all_todos(
         "todo_category_id": 2,
         "todo_category": {"id": 2, "name": "Home"},
     }
+
+
+async def test_get_all__no_existing_todos__returns_empty_list(
+    test_client_db: AsyncClient,
+) -> None:
+    response = await test_client_db.get("/api/todos/")
+    assert response.status_code == 200
+    assert response.json() == []
